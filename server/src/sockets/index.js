@@ -1,14 +1,11 @@
 const fetchData = require("../api/prices");
 
 function setupSocketIO(server) {
-  const io = require("socket.io")(
-    "https://binance-dashboard-production.up.railway.app/",
-    {
-      cors: {
-        origin: "*",
-      },
-    }
-  );
+  const io = require("socket.io")(server, {
+    cors: {
+      origin: "http://localhost:5173",
+    },
+  });
 
   io.on("connection", (socket) => {
     console.log("client connected");

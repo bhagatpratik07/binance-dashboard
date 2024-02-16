@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import io from "socket.io-client";
-
-const socket = io("http://localhost:3000");
+const BACKEND_URL = "https://binance-dashboard-roan.vercel.app/";
+const socket = io(BACKEND_URL);
 
 export const CoinsContext = createContext();
 
