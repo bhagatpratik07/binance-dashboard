@@ -1,53 +1,30 @@
-import { useState, useEffect } from "react";
-import io from "socket.io-client";
-
-const socket = io("http://localhost:3000");
+import { useCoins } from "../contexts/CoinsContext";
+import Search from "./Search";
 
 export default function Coin() {
-  const [coins, setCoins] = useState([]);
-  const [prevCoins, setPrevCoins] = useState({});
-
-  useEffect(() => {
-    socket.on("connect", () => {
-      console.log("connected");
-    });
-
-    socket.on("update", (data) => {
-      setCoins(data);
-      updatePrevCoins(data);
-    });
-  }, []);
-
-  const updatePrevCoins = (data) => {
-    setPrevCoins((prev) => {
-      const updatedPrevCoins = {};
-      data.forEach((coin) => {
-        if (prev[coin.symbol]) {
-          // Update previous value
-          updatedPrevCoins[coin.symbol] = prev[coin.symbol];
-        } else {
-          // Set previous value as current value
-          updatedPrevCoins[coin.symbol] = coin.price;
-        }
-      });
-      return updatedPrevCoins;
-    });
-  };
+  const { filteredCoins, prevCoins } = useCoins();
 
   const getPriceChange = (symbol, price) => {
     const prevPrice = prevCoins[symbol];
     if (price > prevPrice) {
-      return { color: "green", icon: "🔼" };
+      return {
+        class: "bg-green-300 rounded text-green-800 me-2  py-6 px-32",
+        icon: "🔼",
+      };
     } else if (price < prevPrice) {
-      return { color: "red", icon: "🔽" };
+      return {
+        class: "bg-red-300 rounded text-red-800 font-medium me-2 py-6 px-32",
+        icon: "🔽",
+      };
     } else {
-      return { color: "white", icon: "" };
+      return { class: "text-white py-6 px-32", icon: "" };
     }
   };
 
   return (
     <div className="flex justify-center text-center">
       <div className="overflow-x-auto relative shadow-md sm:rounded-lg ">
+        <Search />
         <table className="w-full text-sm text-left ">
           <thead className="text-xs ">
             <tr>
@@ -60,7 +37,7 @@ export default function Coin() {
             </tr>
           </thead>
           <tbody>
-            {coins.map((item) => (
+            {filteredCoins.map((item) => (
               <tr key={item.symbol} className=" border-b ">
                 <th
                   scope="row"
@@ -68,21 +45,15 @@ export default function Coin() {
                 >
                   {item.symbol}
                 </th>
-                <td
-                  className="py-6 px-32"
-                  style={{
-                    color: getPriceChange(item.symbol, item.price).color,
-                  }}
-                >
+                <td className={getPriceChange(item.symbol, item.price).class}>
                   {item.price} {getPriceChange(item.symbol, item.price).icon}
                 </td>
               </tr>
             ))}
+            3
           </tbody>
         </table>
       </div>
     </div>
   );
 }
-
-//  <h4 style={{ color: getColor(coin.symbol, coin.price) }}>
