@@ -34,23 +34,55 @@ export default function Coin() {
     });
   };
 
-  const getColor = (symbol, price) => {
+  const getPriceChange = (symbol, price) => {
     const prevPrice = prevCoins[symbol];
-    return price > prevPrice ? "green" : price < prevPrice ? "red" : "black";
+    if (price > prevPrice) {
+      return { color: "green", icon: "🔼" };
+    } else if (price < prevPrice) {
+      return { color: "red", icon: "🔽" };
+    } else {
+      return { color: "white", icon: "" };
+    }
   };
 
   return (
-    <div>
-      <div>
-        {coins.map((coin) => (
-          <div key={coin.symbol}>
-            <h3>{coin.symbol}</h3>
-            <h4 style={{ color: getColor(coin.symbol, coin.price) }}>
-              {coin.price}
-            </h4>
-          </div>
-        ))}
+    <div className="flex justify-center text-center">
+      <div className="overflow-x-auto relative shadow-md sm:rounded-lg ">
+        <table className="w-full text-sm text-left ">
+          <thead className="text-xs ">
+            <tr>
+              <th scope="col" className="py-6 px-32">
+                Symbol
+              </th>
+              <th scope="col" className="py-6 px-32">
+                Price
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {coins.map((item) => (
+              <tr key={item.symbol} className=" border-b ">
+                <th
+                  scope="row"
+                  className="py-6 px-32 font-medium whitespace-nowrap"
+                >
+                  {item.symbol}
+                </th>
+                <td
+                  className="py-6 px-32"
+                  style={{
+                    color: getPriceChange(item.symbol, item.price).color,
+                  }}
+                >
+                  {item.price} {getPriceChange(item.symbol, item.price).icon}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );
 }
+
+//  <h4 style={{ color: getColor(coin.symbol, coin.price) }}>

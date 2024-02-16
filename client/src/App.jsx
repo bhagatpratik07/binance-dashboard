@@ -1,11 +1,13 @@
 import Coin from "./components/Coin";
+// import Demo from "./components/Demo";
 
 function App() {
   return (
-    <>
-      <div>hello</div>
+    <div className="">
+      <h1>Hi Rob</h1>
+      {/* <Demo /> */}
       <Coin />
-    </>
+    </div>
   );
 }
 
