@@ -2,11 +2,12 @@
 
 The Binance Dashboard is a web application built with React, showcasing real-time prices fetched from the Binance API. It features a clean, user-friendly interface that allows users to view the latest market prices, search for specific symbols.
 
+![Dashboard image](image.png)
+
 ## Features
 
 - **Real-time Price Updates:** prices are updated in real-time, providing users with the latest market data.
 - **Search Functionality:** Users can search for cryptocurrencies by their symbols, making it easy to find specific coins.
-  .
 
 ## Technologies Used
 
